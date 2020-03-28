@@ -42,7 +42,7 @@ void SampleModel::draw()
 	glPopMatrix();
 
 	// draw the sample model
-	setAmbientColor(.1f,.1f,.1f);
+	/*setAmbientColor(.1f,.1f,.1f);
 	setDiffuseColor(COLOR_GREEN);
 	glPushMatrix();
 	glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
@@ -65,7 +65,35 @@ void SampleModel::draw()
 		glTranslated(0.0, 0.0, 0.5);
 		glRotated(90, 1.0, 0.0, 0.0);
 		drawCylinder(4, 0.1, 0.2);
-		glPopMatrix();
+		glPopMatrix();*/
+
+
+	setAmbientColor(.1f, .1f, .1f);
+	setDiffuseColor(0.6,0.8,0);
+	glPushMatrix();
+	glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
+
+	glPushMatrix();
+	glTranslated(0, 4, 4);
+	draw_Head();
+	glPopMatrix();
+
+
+
+	// draw cannon
+	glPushMatrix();
+	glRotated(VAL(ROTATE), 0.0, 1.0, 0.0);
+	glRotated(-90, 1.0, 0.0, 0.0);
+	drawCylinder(VAL(HEIGHT), 0.1, 0.1);
+
+	glTranslated(0.0, 0.0, VAL(HEIGHT));
+	drawCylinder(1, 1.0, 0.9);
+
+	glTranslated(0.0, 0.0, 0.5);
+	glRotated(90, 1.0, 0.0, 0.0);
+	drawCylinder(4, 0.1, 0.2);
+	glPopMatrix();
+
 
 	glPopMatrix();
 }
