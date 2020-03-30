@@ -457,11 +457,143 @@ void draw_Head()
 
 }
 
+void draw_left_wings() 
+{
+    //left wing
+    //first y-axis feather
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glTranslated(3,0.2,0);
+    glRotated(90,1,0,0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.2, 3, 3);
+    glPopMatrix();
 
+    //second feather
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
 
+    glRotated(10,0,1,0);
+    glTranslated(2.8,0.2,0);
+    glRotated(90,1,0,0);
+    glScaled(1,0.2,1);
+    drawCylinder(0.2,2.8,2.8);
+    glPopMatrix();
 
+    //third feather
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glRotated(20, 0, 1, 0);
+    glTranslated(2.6, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.2, 2.6, 2.6);
+    glPopMatrix();
 
+    //4th feather
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glRotated(30, 0, 1, 0);
+    glTranslated(2.4, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.2, 2.4, 2.4);
+    glPopMatrix();
 
+    //5th feather
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glRotated(40, 0, 1, 0);
+    glTranslated(2.2, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.2, 2.2, 2.2);
+    glPopMatrix();
+
+    //6th feather
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glRotated(50, 0, 1, 0);
+    glTranslated(2, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.2, 2, 2);
+    glPopMatrix();
+    
+
+}
+
+void draw_right_wings() 
+{
+    //right wing
+    //first y-axis feather
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glTranslated(-3, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.2, 3, 3);
+    glPopMatrix();
+
+    //2nd feather
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glRotated(-10, 0, 1, 0);
+    glTranslated(-2.8, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.2, 2.8, 2.8);
+    glPopMatrix();
+
+    //3rd feather
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glRotated(-20, 0, 1, 0);
+    glTranslated(-2.6, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.2, 2.6, 2.6);
+    glPopMatrix();
+
+    //4th feather
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glRotated(-30, 0, 1, 0);
+    glTranslated(-2.4, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.2, 2.4, 2.4);
+    glPopMatrix();
+
+    //5th feather
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glRotated(-40, 0, 1, 0);
+    glTranslated(-2.2, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.2, 2.2, 2.2);
+    glPopMatrix();
+
+    //6th feather
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glRotated(-50, 0, 1, 0);
+    glTranslated(-2, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.2, 2, 2);
+    glPopMatrix();
+    
+}
+
+void draw_body() 
+{
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    drawSphere(2);
+    glPopMatrix();
+}
 
 
 

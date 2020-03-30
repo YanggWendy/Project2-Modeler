@@ -73,13 +73,29 @@ void SampleModel::draw()
 	glPushMatrix();
 	glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
 
+	//head
 	glPushMatrix();
 	glTranslated(0, 4, 4);
 	draw_Head();
 	glPopMatrix();
 
+	//left wing
+	glPushMatrix();
+	glTranslated(1.5, 0, 0);
+	draw_left_wings();
+	glPopMatrix();
 
+	//right wing
+	glPushMatrix();
+	glTranslated(-1.5, 0, 0);
+	draw_right_wings();
+	glPopMatrix();
 
+	//body
+	glPushMatrix();
+	draw_body();
+	glPopMatrix();
+	/*
 	// draw cannon
 	glPushMatrix();
 	glRotated(VAL(ROTATE), 0.0, 1.0, 0.0);
@@ -93,7 +109,7 @@ void SampleModel::draw()
 	glRotated(90, 1.0, 0.0, 0.0);
 	drawCylinder(4, 0.1, 0.2);
 	glPopMatrix();
-
+	*/
 
 	glPopMatrix();
 }
