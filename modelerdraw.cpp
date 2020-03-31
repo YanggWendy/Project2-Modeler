@@ -424,10 +424,10 @@ void draw_Head()
     glScaled(1.5, 1.2, 1.2);
  //draw head
     drawSphere(1);
-    setDiffuseColor(0.93, 0.91, 0.84);
-    glTranslated(0.15,0, 0.45);
-    //glScaled(1.2, 1, 1);
+   
 //draw eyes
+    setDiffuseColor(0.93, 0.91, 0.84);
+    glTranslated(0, 0, 0.45);
     drawSphere(0.6);
     glTranslated(0, 0, -0.9);
     drawSphere(0.6);
@@ -438,24 +438,53 @@ void draw_Head()
     drawSphere(0.2);
     glPopMatrix();
 
-//draw mouth
-    glPushMatrix();
-    setDiffuseColor(0.33, 0.55, 0.33);
-    glTranslated(1.25, 0, 0);
-    glScaled(1, 1, 2);
-    drawSphere(0.3);
-    glTranslated(-0.15, 0, 0);
-    drawTriangle(0,0.15,-0.2,0,0.1,0.2,1.7,0,0);
-    drawTriangle(0, 0.15,-0.2, 0, 0, -0.3, 1.9, 0, 0);
-    drawTriangle(0, 0.15, 0.2, 0, 0, 0.3, 1.9, 0, 0);
-    
-    drawTriangle(0, -0.15, -0.2, 0, 0.1, 0.2, 1.9, 0, 0);
-    drawTriangle(0, -0.15, -0.2, 0, 0, -0.3, 1.9, 0, 0);
-    drawTriangle(0, -0.15, 0.2, 0, 0, 0.3, 1.9, 0, 0);
-   
-    glPopMatrix();
 
 }
+
+void draw_UpperMouth()
+{
+    glPushMatrix();
+    setDiffuseColor(0.33, 0.55, 0.33);
+    glScaled(1, 1, 2);
+    drawTriangle(0, 0.3, -0.1, 0, 0.3, 0.1, 1.9, 0, 0);
+    drawTriangle(0, 0.3, -0.1, 0, 0.2, -0.2, 1.9, 0, 0);
+    drawTriangle(0, 0.3, 0.1, 0, 0.2, 0.2, 1.9, 0, 0);
+
+    drawTriangle(0, 0.2, -0.2, 0, 0, -0.3, 1.9, 0, 0);
+    drawTriangle(0, 0.2, 0.2, 0, 0, 0.3, 1.9, 0, 0);
+
+    drawTriangle(0, 0.3, -0.1, 0, 0.3, 0.1, 0, 0, 0);
+    drawTriangle(0, 0.3, -0.1, 0, 0.2, -0.2, 0, 0, 0);
+    drawTriangle(0, 0.3, 0.1, 0, 0.2, 0.2, 0, 0, 0);
+
+    drawTriangle(0, 0.2, -0.2, 0, 0, -0.3, 0, 0, 0);
+    drawTriangle(0, 0.2, 0.2, 0, 0, 0.3, 0, 0, 0);
+    glPopMatrix();
+}
+
+void draw_LowerMouth()
+{
+    glPushMatrix();
+    setDiffuseColor(0.33, 0.55, 0.33);
+    glScaled(1, 1, 2);
+    drawTriangle(0, -0.3, -0.1, 0, -0.3, 0.1, 1.9, 0, 0);
+    drawTriangle(0, -0.3, -0.1, 0, -0.2, -0.2, 1.9, 0, 0);
+    drawTriangle(0, -0.3, 0.1, 0,-0.2, 0.2, 1.9, 0, 0);
+
+    drawTriangle(0, -0.2, -0.2, 0, 0, -0.3, 1.9, 0, 0);
+    drawTriangle(0, -0.2, 0.2, 0, 0, 0.3, 1.9, 0, 0);
+
+    drawTriangle(0, -0.3, -0.1, 0, -0.3, 0.1, 0, 0, 0);
+    drawTriangle(0, -0.3, -0.1, 0, -0.2, -0.2, 0, 0, 0);
+    drawTriangle(0, -0.3, 0.1, 0, -0.2, 0.2, 0, 0, 0);
+
+    drawTriangle(0, -0.2, -0.2, 0, 0, -0.3, 0, 0, 0);
+    drawTriangle(0, -0.2, 0.2, 0, 0, 0.3, 0, 0, 0);
+    glPopMatrix();
+}
+
+
+
 
 void draw_left_wings() 
 {
@@ -591,6 +620,8 @@ void draw_body()
 {
     glPushMatrix();
     setDiffuseColor(1, 0.5, 0);
+    glRotated(-20, 1, 0, 0);
+    glScaled(1, 1, 1.2);
     drawSphere(2);
     glPopMatrix();
 }

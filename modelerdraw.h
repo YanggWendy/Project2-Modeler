@@ -95,6 +95,8 @@ void drawTriangle( double x1, double y1, double z1,
 			       double x3, double y3, double z3 );
 
 void draw_Head();
+void draw_UpperMouth();
+void draw_LowerMouth();
 void draw_left_wings();
 void draw_right_wings();
 void draw_body();
