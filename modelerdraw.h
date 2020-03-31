@@ -100,5 +100,11 @@ void draw_LowerMouth();
 void draw_left_wings();
 void draw_right_wings();
 void draw_body();
+void draw_rightupperLeg();
+void draw_leftlowerLeg();
+void draw_leftupperLeg();
+void draw_rightlowerLeg();
+void draw_righttoes();
+void draw_lefttoes();
 
 #endif

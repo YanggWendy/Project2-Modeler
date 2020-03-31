@@ -93,65 +93,32 @@ void SampleModel::draw()
 	draw_Head();
 
 	glTranslated(1.35, 0, 0);
-	glTranslated(0, 2.8, 1.2);
-	glTranslated(0, VAL(NECK_LENTH) - 1, 0.2 * VAL(NECK_LENTH));
-	glRotated(-90, 0.0, 1.0, 0.0);
 	//upper mouth
 	glPushMatrix();
-	glRotated(VAL(MOUTHZPOS), 1, 0, 0);
-	glRotated(90, 0.0, 1.0, 0.0);
-	glTranslated(0, -VAL(NECK_LENTH) + 1, -0.2 * VAL(NECK_LENTH));
-	glTranslated(0, -2.8, -1.2);
-	draw_UpperMouth();
-	glPopMatrix();
-
-	//lower mouth
-	glPushMatrix();
-	glRotated(-VAL(MOUTHZPOS), 1, 0, 0);
-	glRotated(90, 0.0, 1.0, 0.0);
-	glTranslated(0, -2.8, -1.2);
-	glTranslated(0, -VAL(NECK_LENTH) + 1, -0.2 * VAL(NECK_LENTH));
-	draw_LowerMouth();
-	glPopMatrix();
-
-	glPopMatrix();
-
-	//upper mouth
-	/*glPushMatrix();
-	glRotated(VAL(HEADYPOS), 0.0, 1.0, 0.0);
-	glRotated(VAL(HEADZPOS), 0.0, 0.0, 1.0);
-	glTranslated(0, VAL(NECK_LENTH) - 1, 0.2 * VAL(NECK_LENTH));
-	glTranslated(0.0, 2.8, 2.6);
-	glRotated(-90, 0.0, 1.0, 0.0);
 	glRotated(VAL(MOUTHZPOS), 0, 0, 1);
-	glScaled(1, 1, 2);
 	draw_UpperMouth();
-	/*glTranslated(0.4, 0, -0.3);
-	glScaled(0.8, 1, 0.7);
-	drawSphere(0.4);
 	glPopMatrix();
 
 	//lower mouth
 	glPushMatrix();
-	glRotated(VAL(HEADYPOS), 0.0, 1.0, 0.0);
-	glRotated(VAL(HEADZPOS), 0.0, 0.0, 1.0);
-	glTranslated(0, VAL(NECK_LENTH) - 1, 0.2 * VAL(NECK_LENTH));
-	glTranslated(0.0, 2.8, 2.6);
-	glRotated(-90, 0.0, 1.0, 0.0);
 	glRotated(-VAL(MOUTHZPOS), 0, 0, 1);
-	glScaled(1, 1, 2);
 	draw_LowerMouth();
-	glPopMatrix();*/
+	glPopMatrix();
 
+	glPopMatrix();
+
+	
 	//left wing
 	glPushMatrix();
 	glTranslated(1.5, 0, 0);
+	glRotated(VAL(LEFT_WING), 0.0, 0.0, 1);
 	draw_left_wings();
 	glPopMatrix();
 
 	//right wing
 	glPushMatrix();
 	glTranslated(-1.5, 0, 0);
+	glRotated(VAL(RIGHT_WING), 0.0, 0.0, 1);
 	draw_right_wings();
 	glPopMatrix();
 
@@ -159,21 +126,46 @@ void SampleModel::draw()
 	glPushMatrix();
 	draw_body();
 	glPopMatrix();
-	/*
-	// draw cannon
+
+	
+	//rightupper leg
 	glPushMatrix();
-	glRotated(VAL(ROTATE), 0.0, 1.0, 0.0);
-	glRotated(-90, 1.0, 0.0, 0.0);
-	drawCylinder(VAL(HEIGHT), 0.1, 0.1);
-
-	glTranslated(0.0, 0.0, VAL(HEIGHT));
-	drawCylinder(1, 1.0, 0.9);
-
-	glTranslated(0.0, 0.0, 0.5);
+	glTranslated(0.9, -1.7, -0.3);
+	glRotated(VAL(UPPER_RIGHT_LEG), 1.0, 0.0, 0);
+	drawSphere(0.55);
+	glTranslated(0, -1.5, -0.5);
+	glRotated(-70, 1.0, 0.0, 0.0);
+	draw_rightupperLeg();
+	drawSphere(0.2);
 	glRotated(90, 1.0, 0.0, 0.0);
-	drawCylinder(4, 0.1, 0.2);
+	glRotated(VAL(LOWER_RIGHT_LEG), 1.0, 0.0, 0);
+	draw_rightlowerLeg();
+	glTranslated(0, -0.1, 1.1);
+	glRotated(-20, 1.0, 0.0, 0.0);
+	glRotated(-40, 0.0, 1.0, 0.0);
+	drawSphere(0.1);
+	draw_righttoes();
 	glPopMatrix();
-	*/
+
+	//lefttupper leg
+	glPushMatrix();
+	setDiffuseColor(0.93, 0.46, 0);
+	glTranslated(-0.9, -1.7, -0.3);
+	glRotated(VAL(UPPER_LEFT_LEG), 1.0, 0.0, 0);
+	drawSphere(0.55);
+	glTranslated(0, -1.5, -0.5);
+	glRotated(-70, 1.0, 0.0, 0.0);
+	draw_leftupperLeg();
+	drawSphere(0.2);
+	glRotated(90, 1.0, 0.0, 0.0);
+	glRotated(VAL(LOWER_LEFT_LEG), 1.0, 0.0, 0.0);
+	draw_leftlowerLeg();
+	glTranslated(0, -0.1, 1.1);
+	glRotated(-20, 1.0, 0.0, 0.0);
+	glRotated(-40, 0.0, 1.0, 0.0);
+	drawSphere(0.1);
+	draw_lefttoes();
+	glPopMatrix();
 
 	glPopMatrix();
 }
@@ -193,6 +185,16 @@ int main()
 	controls[HEADZPOS] = ModelerControl("Head Z Rotate", -20, 20, 1, 0);
 	controls[MOUTHZPOS] = ModelerControl("Mouth Rotate", 0, 40, 1, 0);
 	controls[NECK_LENTH] = ModelerControl("Neck Length", 1, 1.6, 0.1f, 1);
+
+	controls[UPPER_RIGHT_LEG] = ModelerControl("upper right leg", -20, 20, 1, 0);
+	controls[UPPER_LEFT_LEG] = ModelerControl("upper left leg", -20, 20, 1, 0);
+	controls[LOWER_RIGHT_LEG] = ModelerControl("lower right leg", -20, 20, 1, 0);
+	controls[LOWER_LEFT_LEG] = ModelerControl("lower left leg", -20, 20, 1, 0);
+	controls[LEFT_TOES] = ModelerControl("left toes", -20, 20, 1, 0);
+	controls[RIGHT_TOES] = ModelerControl("right toes", -20, 20, 1, 0);
+
+	controls[RIGHT_WING] = ModelerControl("right wing", -20, 20, 1, 0);
+	controls[LEFT_WING] = ModelerControl("left wing", -20, 20, 1, 0);
 
 
 	ModelerApplication::Instance()->Init(&createSampleModel, controls, NUMCONTROLS);

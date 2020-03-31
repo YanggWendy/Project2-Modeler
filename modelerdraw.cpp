@@ -1,6 +1,8 @@
 #include "modelerdraw.h"
 #include <FL/gl.h>
 #include <GL/glu.h>
+#include "modelerglobals.h"
+#include "modelerapp.h"
 #include <cstdio>
 #include <math.h>
 
@@ -627,5 +629,69 @@ void draw_body()
 }
 
 
+void draw_leftupperLeg()
+{
+    glPushMatrix();
+    drawCylinder(1.4, 0.2, 0.5);
+    glPopMatrix();
+}
+
+void draw_rightupperLeg()
+{
+    glPushMatrix();
+    drawCylinder(1.4, 0.2, 0.5);
+    glPopMatrix();
+}
 
 
+void draw_leftlowerLeg()
+{
+    glPushMatrix();
+    setDiffuseColor(0.56, 0.11, 0);
+    drawCylinder(1.3, 0.15, 0.1);
+    glPopMatrix();
+}
+
+void draw_rightlowerLeg()
+{
+    glPushMatrix();
+    setDiffuseColor(0.56, 0.11, 0);
+    drawCylinder(1.3, 0.15, 0.1);
+    glPopMatrix();
+}
+
+void draw_righttoes()
+{
+    glPushMatrix();
+    setDiffuseColor(0.56, 0.11, 0);
+    glRotated(20- VAL(RIGHT_TOES), 0, 1, 0);
+    drawCylinder(0.9, 0.1, 0.08);
+    glRotated(30 , 0, 1, 0);
+    drawCylinder(0.9, 0.1, 0.08);
+    glRotated(30 , 0, 1, 0);
+    drawCylinder(0.9, 0.1, 0.08);
+    glRotated(30, 0, 1, 0);
+    drawCylinder(0.9, 0.1, 0.08);
+    glRotated(110, 0, 1, 0);
+    drawCylinder(0.5, 0.1, 0.08);
+
+    glPopMatrix();
+}
+
+void draw_lefttoes()
+{
+    glPushMatrix();
+    setDiffuseColor(0.56, 0.11, 0);
+    glRotated(20 - VAL(LEFT_TOES), 0, 1, 0);
+    drawCylinder(0.9, 0.1, 0.08);
+    glRotated(30, 0, 1, 0);
+    drawCylinder(0.9, 0.1, 0.08);
+    glRotated(30, 0, 1, 0);
+    drawCylinder(0.9, 0.1, 0.08);
+    glRotated(30, 0, 1, 0);
+    drawCylinder(0.9, 0.1, 0.08);
+    glRotated(110, 0, 1, 0);
+    drawCylinder(0.5, 0.1, 0.08);
+
+    glPopMatrix();
+}
