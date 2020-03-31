@@ -695,3 +695,66 @@ void draw_lefttoes()
 
     glPopMatrix();
 }
+
+void draw_tail()
+{
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glRotated(90 + 7, 0, 1, 0);
+    glTranslated(1, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.3, 1, 1);
+    glPopMatrix();
+
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glRotated(90 + 20, 0, 1, 0);
+    glTranslated(0.8, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.3, 0.8, 0.8);
+    glPopMatrix();
+
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glRotated(90 - 7, 0, 1, 0);
+    glTranslated(1, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.3, 1, 1);
+    glPopMatrix();
+
+    glPushMatrix();
+    setDiffuseColor(1, 0.5, 0);
+    glRotated(90 - 20, 0, 1, 0);
+    glTranslated(0.8, 0.2, 0);
+    glRotated(90, 1, 0, 0);
+    glScaled(1, 0.2, 1);
+    drawCylinder(0.3, 0.8, 0.8);
+    glPopMatrix();
+}
+
+void draw_connection()
+{
+    glPushMatrix();
+    glRotated(-20, 1, 0, 0);
+    glTranslated(0, 0, -1.6);
+    glRotated(180, 1, 0, 0);
+    drawCylinder(1, 1.5, 1.1);
+    glPopMatrix();
+
+    glPushMatrix();
+    glRotated(-20, 1, 0, 0);
+    glTranslated(0, 0, -1.6 - 1);
+    glRotated(180, 1, 0, 0);
+    drawCylinder(1, 1.1, 0.6);
+    glPopMatrix();
+
+    glPushMatrix();
+    glRotated(-20, 1, 0, 0);
+    glTranslated(0, 0, -1.6 - 2);
+    glRotated(180, 1, 0, 0);
+    drawCylinder(1, 0.6, 0.2);
+    glPopMatrix();
+}

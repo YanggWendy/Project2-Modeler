@@ -100,6 +100,8 @@ void draw_LowerMouth();
 void draw_left_wings();
 void draw_right_wings();
 void draw_body();
+void draw_tail();
+void draw_connection();
 void draw_rightupperLeg();
 void draw_leftlowerLeg();
 void draw_leftupperLeg();

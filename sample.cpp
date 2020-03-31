@@ -127,6 +127,18 @@ void SampleModel::draw()
 	draw_body();
 	glPopMatrix();
 
+	//connection
+	glPushMatrix();
+	draw_connection();
+	glPopMatrix();
+
+	//tail
+	glPushMatrix();
+	glRotated(-20, 1, 0, 0);
+	glTranslated(0, 0, -4.5);
+	draw_tail();
+	glPopMatrix();
+
 	
 	//rightupper leg
 	glPushMatrix();
