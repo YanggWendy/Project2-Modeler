@@ -951,11 +951,11 @@ void draw_level0_animation()
     glPushMatrix();
     glTranslated(1.5, 0, 0);
     glRotated(VAL(LEFT_WING), 0.0, 0.0, 1);
-    if (left_wing_angle == 70)
+    if (left_wing_angle == 55)
     {
         left_wing_flag = true;
     }
-    if (left_wing_angle == -70)
+    if (left_wing_angle == -55)
     {
         left_wing_flag = false;
     }
@@ -969,11 +969,11 @@ void draw_level0_animation()
     glPushMatrix();
     glTranslated(-1.5, 0, 0);
     glRotated(VAL(RIGHT_WING), 0.0, 0.0, 1);
-    if (right_wing_angle == 70)
+    if (right_wing_angle == 55)
     {
         right_wing_flag = true;
     }
-    if (right_wing_angle == -70)
+    if (right_wing_angle == -55)
     {
         right_wing_flag = false;
     }
