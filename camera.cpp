@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <Fl/gl.h>
 #include <gl/glu.h>
-
+#include <math.h>
 #include "camera.h"
 
 #pragma warning(push)
@@ -178,9 +178,53 @@ void Camera::applyViewingTransform() {
 
 	// Place the camera at mPosition, aim the camera at
 	// mLookAt, and twist the camera such that mUpVector is up
+	/*
 	gluLookAt(	mPosition[0], mPosition[1], mPosition[2],
 				mLookAt[0],   mLookAt[1],   mLookAt[2],
 				mUpVector[0], mUpVector[1], mUpVector[2]);
+	*/
+	lookAt(mPosition,mLookAt, mUpVector);
 }
+
+void Camera::lookAt(Vec3f eye, Vec3f at, Vec3f up) 
+{
+	GLdouble temp[16];
+	Vec3d forward(at[0] - eye[0], at[1] - eye[1], at[2] - eye[2]);
+	forward.normalize();
+	Vec3d upward(up[0],up[1],up[2]);
+	upward.normalize();
+	Vec3d x_axis(forward[1]*upward[2]-upward[1]*forward[2], forward[2]*upward[0]-upward[2]*forward[0], forward[0]*upward[1]-upward[0]*forward[1]);
+	x_axis.normalize();
+
+	upward[0] = x_axis[1]*forward[2]-forward[1]*x_axis[2];
+	upward[1] = x_axis[2] * forward[0] - forward[2] * x_axis[0];
+	upward[2] = x_axis[0] * forward[1] - forward[0] * x_axis[1];
+
+
+	temp[0] = x_axis[0];
+	temp[4] = x_axis[1];
+	temp[8] = x_axis[2];
+	temp[12] = 0;
+
+	temp[1] = upward[0];
+	temp[5] = upward[1];
+	temp[9] = upward[2];
+	temp[13] = 0;
+
+	temp[2] = 0- forward[0];
+	temp[6] = 0- forward[1];
+	temp[10] = 0- forward[2];
+	temp[14] = 0;
+
+	temp[3] = 0;
+	temp[7] = 0;
+	temp[11] = 0;
+	temp[15] = 1;
+
+	glLoadIdentity();
+	glMultMatrixd(temp);
+	glTranslated(-1*eye[0], -1*eye[1], -1*eye[2]);
+}
+
 
 #pragma warning(pop)
