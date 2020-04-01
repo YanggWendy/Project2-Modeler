@@ -109,4 +109,12 @@ void draw_rightlowerLeg();
 void draw_righttoes();
 void draw_lefttoes();
 
+void draw_level0();
+void draw_level1();
+void draw_level2();
+void draw_level3();
+void draw_level4();
+void draw_level5();
+void draw_level0_animation();
+
 #endif
