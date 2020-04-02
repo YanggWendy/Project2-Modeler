@@ -13,7 +13,7 @@ template <class T> class Mat4;
 
 template <class T>
 class Mat3 {
-
+public:
 	//---[ Private Variable Declarations ]-----------------
 
 		// matrix elements in row major order

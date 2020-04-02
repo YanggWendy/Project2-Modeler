@@ -30,6 +30,13 @@ int ModelerView::handle(int event)
 
 	switch(event)	 
 	{
+	case FL_MOUSEWHEEL: 
+		{
+		m_camera->wheelMove(Fl::event_dy());
+		//cout << Fl::event_dy();
+		}
+		break;
+
 	case FL_PUSH:
 		{
 			switch(eventButton)

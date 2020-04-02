@@ -105,6 +105,7 @@ Camera::Camera()
 	mDolly = -20.0f;
 	mElevation = 0.2f;
 	mAzimuth = (float)M_PI;
+	mTwist = 0;
 
 	mLookAt = Vec3f( 0, 0, 0 );
 	mCurrentMouseAction = kActionNone;
@@ -117,6 +118,23 @@ void Camera::clickMouse( MouseAction_t action, int x, int y )
 	mCurrentMouseAction = action;
 	mLastMousePosition[0] = x;
 	mLastMousePosition[1] = y;
+}
+
+void Camera::wheelMove(int dy) 
+{
+	mTwist = 5.0* dy * M_PI / 180;
+	Vec3f forward = mLookAt - mPosition;
+	forward.normalize();
+	float x = forward[0];
+	float y = forward[1];
+	float z = forward[2];
+	double c = cos(mTwist);
+	double s = sin(mTwist);
+	Mat3f rotation(1, x*y*(1-c)-z*s,  x*z*(1-c)+y*s,
+					y*x*(1-c)+z*s, 1, y*z*(1-c)-x*s,
+					x*z*(1-c)-y*s, y*z*(1-c)+x*s, 1
+		);
+	mUpVector = rotation * mUpVector;
 }
 
 void Camera::dragMouse( int x, int y )
