@@ -73,7 +73,7 @@ void BirdModel::draw()
 	
 
 	int isAnimationOn = ModelerUserInterface::m_controlsAnimOnMenu->value();
-
+	/*
 	glPushMatrix();
 	//test
 	point p1(2, 2, 3 );
@@ -123,7 +123,7 @@ void BirdModel::draw()
 	draw_pixl1();
 
 	glPopMatrix();
-
+	*/
 	// draw the floor
 	float R = VAL(DEFAULT_LIGHT_R) / 255;
 	float G = VAL(DEFAULT_LIGHT_G) / 255;
