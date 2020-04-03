@@ -5,6 +5,8 @@
 #include "modelerapp.h"
 #include <cstdio>
 #include <math.h>
+#include <iostream>
+using namespace std;
 
 static int right_wing_angle = 0;
 static bool right_wing_flag = false;
@@ -1534,4 +1536,97 @@ void draw_level5()
     glPopMatrix();
 
 
+}
+
+void inverse_kinematics(double posX,double posY,double posZ) 
+{
+    double positionX = posX, positionY=posY, positionZ=posZ;
+    double kneeCons[3]{0.9,-3.2,-0.8};
+    double ankleCons[3]{0.9,-3.3,0.3};
+    double error[4]{INT_MAX,INT_MAX,INT_MAX,INT_MAX};
+
+    double len1 = sqrt(1.5*1.5+0.5*0.5);
+    double len2 = sqrt(0.1*0.1+1.1*1.1);
+    double len3 = 0.9;
+
+    double x = positionX - 0.9;
+    double y = positionY - (-1.7);
+    double z = positionZ - (-0.3);
+
+    double theta[2];
+    double alpha[4];
+    double beta[4];
+
+    theta[0] = asin( x / len3);
+    theta[1] = (theta[0] > 0) ? (M_PI - theta[0]) : (-M_PI - theta[0]);
+
+    for (int i = 0; i < 2; i++) {
+        double y_prime = y;
+        double z_prime = z - len3 * cos(theta[i]);
+
+        double temp = acos( (pow(y_prime,2)+pow(z_prime,2)-pow(len1,2)-pow(len2,2)) / (2*len1*len2));
+        if (i==0) {
+            beta[0] = temp;
+            beta[1] = -1 * temp;
+
+            for (int j = 0; j < 2; j++) {
+                double coeff1 = z_prime + len2 * y_prime * sin(beta[j]) / (len1 + len2 * cos(beta[j]));
+                double coeff2 = len1 + len2 * cos(beta[j]) + pow(len2, 2) * pow(sin(beta[j]), 2) / (len1 + len2 * cos(beta[j]));
+                alpha[j] = acos(coeff1 / coeff2);
+            }
+        }
+        else {
+            beta[2] = temp;
+            beta[3] = -1 * temp;
+
+            for (int j = 2; j < 4; j++) {
+                double coeff1 = z_prime + len2 * y_prime * sin(beta[j]) / (len1 + len2 * cos(beta[j]));
+                double coeff2 = len1 + len2 * cos(beta[j]) + pow(len2, 2) * pow(sin(beta[j]), 2) / (len1 + len2 * cos(beta[j]));
+                alpha[j] = acos(coeff1 / coeff2);
+            }
+        }
+    }
+
+    double min_error = error[0];
+    int index = -1;
+    
+    for (int i = 0; i < 4; i++) {
+        double real_knee[3];
+        real_knee[0] = 0;
+        real_knee[1] = len1 * sin(alpha[i]);
+        real_knee[2] = len1 * cos(alpha[i]);
+
+        double real_ankle[3];
+        real_ankle[0] = 0;
+        real_ankle[1] = y;
+        real_ankle[2] = z - len3 * cos(theta[i/2]);
+
+        error[i] = pow(real_knee[0] - kneeCons[0], 2) + pow(real_knee[1] - kneeCons[1], 2) + pow(real_knee[2] - kneeCons[2], 2)
+            + pow(real_ankle[0] - ankleCons[0], 2) + pow(real_ankle[1] - ankleCons[1], 2) + pow(real_ankle[2] - ankleCons[2], 2);
+
+        if (min_error > error[i]) {
+            min_error = error[i];
+            index = i;
+        }
+    }
+    
+    if (index != -1) {
+        double temp0 = atan(1.5 / 0.5) * 180 / M_PI;
+        //cout << temp0 << ' ';
+        double temp1 = -1*alpha[index]*180/M_PI - (180-temp0);
+        //cout << "alpha: " << -1 * alpha[index] * 180 / M_PI << ' ';
+        ModelerApplication::Instance()->SetControlValue(UPPER_RIGHT_LEG,temp1);
+        //cout << "upper: " << temp1;
+        temp0 = atan(0.1 / 1.1) * 180 / M_PI + temp0;
+        //cout <<" hh "<< temp0 << ' ';
+        temp1 = 180 - temp0 - beta[index]*180/M_PI;
+        //cout << "beta: " << -1*beta[index] * 180 / M_PI;
+        ModelerApplication::Instance()->SetControlValue(LOWER_RIGHT_LEG,temp1 );
+        //cout << " lower: " << temp1;
+        temp1 = 0;
+        temp1 = 10 - theta[index/2] * 180 / M_PI;
+        ModelerApplication::Instance()->SetControlValue(RIGHT_TOES, temp1);
+        //cout << " toe: " << temp1<<endl;
+    }
+    
 }

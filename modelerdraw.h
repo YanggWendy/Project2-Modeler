@@ -117,4 +117,6 @@ void draw_level4();
 void draw_level5();
 void draw_level0_animation();
 
+void inverse_kinematics(double,double,double);
+
 #endif
