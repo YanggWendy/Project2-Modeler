@@ -78,6 +78,7 @@ public:
     void clickMouse( MouseAction_t action, int x, int y );
     void dragMouse( int x, int y );
     void releaseMouse( int x, int y );
+    void wheelMove(int );
     
     //---[ Viewing Transform ]--------------------------------
     void applyViewingTransform();

@@ -169,8 +169,19 @@ void BirdModel::draw()
 			drawTexture();*/
 			if (isAnimationOn) { draw_level0_animation(); }
 			else {
+				if (VAL(IK_ON) == 1) {
+					/*
+					glPushMatrix();
+					setDiffuseColor(1,1,1);
+					glTranslated(VAL(TARGETX), VAL(TARGETY), VAL(TARGETZ));
+					drawBox(0.2,0.2,0.2);
+					glPopMatrix();
+					*/
+					inverse_kinematics(VAL(TARGETX), VAL(TARGETY), VAL(TARGETZ));
+
+					//cout << VAL(TARGETX) <<' '<< VAL(TARGETY) <<' '<< VAL(TARGETZ) << endl;
+				}
 				draw_level0();
-				//draw_mode4();
 			}
 		}
 		else if (VAL(LEVEL) == 1)
@@ -256,6 +267,10 @@ int main()
 	controls[LIGHTX] = ModelerControl("Light X", -5, 5, 0.1f, 0);
 	controls[LIGHTY] = ModelerControl("Light Y", 0, 5, 0.1f, 0);
 	controls[LIGHTZ] = ModelerControl("Light Z", -5, 5, 0.1f, 0);
+	controls[TARGETX] = ModelerControl("IK x-coordinate", 0, 1.8, 0.1, 0.9);
+	controls[TARGETY] = ModelerControl("IK y-coordinate", -4.3, 0.9, 0.1, -3.3);
+	controls[TARGETZ] = ModelerControl("IK z-coordinate", -2.9, 2.3, 0.1, 1.2);
+	controls[IK_ON] = ModelerControl("IK on/off", 0, 1, 1, 0);
 
 	controls[FRAME_ALL] = ModelerControl("Fram all", 0, 1, 1, 0);
 
