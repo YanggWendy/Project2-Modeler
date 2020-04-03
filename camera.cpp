@@ -143,9 +143,9 @@ void Camera::wheelMove(int dy)
 		y * x * (1 - c) + z * s, 1, y * z * (1 - c) - x * s,
 		x * z * (1 - c) - y * s, y * z * (1 - c) + x * s, 1
 		);
-	cout << "original mUpVector: " << mUpVector[0] << ' ' << mUpVector[1] << ' ' << mUpVector[2] << endl;
+	//cout << "original mUpVector: " << mUpVector[0] << ' ' << mUpVector[1] << ' ' << mUpVector[2] << endl;
 	mUpVector = rotation * mUpVector;
-	cout << "mUpVector: " << mUpVector[0] << ' ' << mUpVector[1] << ' ' << mUpVector[2] << endl;
+	//cout << "mUpVector: " << mUpVector[0] << ' ' << mUpVector[1] << ' ' << mUpVector[2] << endl;
 }
 
 void Camera::dragMouse( int x, int y )
