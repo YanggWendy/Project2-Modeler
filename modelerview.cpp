@@ -7,6 +7,10 @@
 #include <GL/glu.h>
 #include <cstdio>
 
+#include "modelerglobals.h"
+#include "modelerapp.h"
+
+
 static const int	kMouseRotationButton			= FL_LEFT_MOUSE;
 static const int	kMouseTranslationButton			= FL_MIDDLE_MOUSE;
 static const int	kMouseZoomButton				= FL_RIGHT_MOUSE;
@@ -30,13 +34,6 @@ int ModelerView::handle(int event)
 
 	switch(event)	 
 	{
-	case FL_MOUSEWHEEL: 
-		{
-		m_camera->wheelMove(Fl::event_dy());
-		//cout << Fl::event_dy();
-		}
-		break;
-
 	case FL_PUSH:
 		{
 			switch(eventButton)
@@ -77,6 +74,10 @@ int ModelerView::handle(int event)
 		return 0;
 	}
 	
+	/*float x = VAL(CAM_XPOS);
+	float y = VAL(CAM_YPOS)+10;
+	float z = VAL(CAM_ZPOS)-15;
+	m_camera->set_Camera_Position( x,  y,  z);*/
 	redraw();
 
 	return 1;
@@ -107,6 +108,17 @@ void ModelerView::draw()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	if (VAL(FRAME_ALL)==0)
+	{
+		float x = VAL(CAM_XPOS);
+		float y = VAL(CAM_YPOS) + 8;
+		float z = VAL(CAM_ZPOS) - 10;
+		m_camera->set_Camera_Position(x, y, z);
+	}
+	else 
+	{
+		m_camera->set_Camera_Position(0, 20, -20);
+	}
     m_camera->applyViewingTransform();
 
     glLightfv( GL_LIGHT0, GL_POSITION, lightPosition0 );

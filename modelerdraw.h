@@ -10,6 +10,37 @@
 
 #include "modelerglobals.h"
 
+class point
+{
+public:
+	point() {};
+	point(float a, float b, float c) 
+	{
+		x = a;
+		y = b;
+		z = c;
+	};
+
+	float x;
+	float y;
+	float z;
+};
+
+class curve
+{
+
+public:
+	curve(int a) 
+	{
+		point_num = a;
+		points = new point[point_num];
+	}
+	
+	int point_num;
+	point* points;
+};
+
+
 
 enum DrawModeSetting_t 
 { NONE=0, NORMAL, WIREFRAME, FLATSHADE, };
@@ -116,7 +147,19 @@ void draw_level3();
 void draw_level4();
 void draw_level5();
 void draw_level0_animation();
+void draw_flower();
 
-void inverse_kinematics(double,double,double);
+void draw_mode0();
+void draw_mode1();
+void draw_mode2();
+void draw_mode3();
+void draw_mode4();
+
+void draw_righteyebrow();
+void draw_lefteyebrow();
+void draw_surface(curve a, curve b);
+void draw_pixl();
+void draw_pixl1();
+float calculate_point_distance(point a, point b);
 
 #endif

@@ -5,7 +5,10 @@
 #include "modelerapp.h"
 #include <cstdio>
 #include <math.h>
-#include <iostream>
+
+#include <iostream> 
+#include <list> 
+#include <iterator> 
 using namespace std;
 
 static int right_wing_angle = 0;
@@ -263,7 +266,7 @@ void drawBox( double x, double y, double z )
     {
         _dump_current_modelview();
         fprintf(mds->m_rayFile,  
-            "scale(%f,%f,%f,translate(0.5,0.5,0.5,box {\n", x, y, z );
+            "scale(%f,%f,%f,translate(0.5,0.5,0.5,box {\n", x, y, z ); 
         _dump_current_material();
         fprintf(mds->m_rayFile,  "})))\n" );
     }
@@ -452,10 +455,23 @@ void draw_Head()
     glTranslated(0, 0, -0.9);
     drawSphere(0.6);
     setDiffuseColor(0.11, 0.11, 0.11);
+
     glTranslated(0.14, 0,-0.45);
     drawSphere(0.2);
+   
+    glPushMatrix();
+    glTranslated(0, 0.45, 0);
+    draw_lefteyebrow();
+    glPopMatrix();
+
+    setDiffuseColor(0.11, 0.11, 0.11);
     glTranslated(0, 0, 1.8);
     drawSphere(0.2);
+
+    glTranslated(0, 0.45, 0);
+    draw_righteyebrow();
+
+
     glPopMatrix();
 
 
@@ -777,6 +793,24 @@ void draw_connection()
 }
 
 
+void draw_righteyebrow()
+{
+    glPushMatrix();
+    setDiffuseColor(VAL(EYEBROW_R), VAL(EYEBROW_G), VAL(EYEBROW_B));
+    glScaled(3, 1, 1);
+    drawSphere(0.1);
+    glPopMatrix();
+}
+
+void draw_lefteyebrow()
+{
+    glPushMatrix();
+    setDiffuseColor(VAL(EYEBROW_R), VAL(EYEBROW_G), VAL(EYEBROW_B));
+    glScaled(3, 1, 1);
+    drawSphere(0.1);
+    glPopMatrix();
+}
+
 void draw_constrain()
 {
 
@@ -894,7 +928,14 @@ void draw_constrain()
 
 void draw_level0_animation()
 {
+    //draw flawor
+    glPushMatrix();
+    glTranslated(-3, 0, 4);
+    draw_flower();
+    glPopMatrix();
 
+    glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
+    glTranslated(0, 3.9, 0);
 
     //Neck part
     glPushMatrix();
@@ -1104,12 +1145,20 @@ void draw_level0_animation()
     draw_lefttoes();
     glPopMatrix();
 
-
 }
 
 
 void draw_level0()
 {
+    //draw flawor
+    glPushMatrix();
+    glTranslated(-3, 0, 4);
+    draw_flower();
+    glPopMatrix();
+
+    glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
+    glTranslated(0, 3.9, 0);
+
     //Neck part
     glPushMatrix();
     setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
@@ -1220,6 +1269,14 @@ void draw_level0()
 
 void draw_level1()
 {
+    //draw flawor
+    glPushMatrix();
+    glTranslated(-3, 0, 4);
+    draw_flower();
+    glPopMatrix();
+
+    glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
+    glTranslated(0, 3.9, 0);
 
     //Neck part
     glPushMatrix();
@@ -1322,6 +1379,14 @@ void draw_level1()
 }
 void draw_level2()
 {
+    //draw flawor
+	glPushMatrix();
+	glTranslated(-3, 0, 4);
+	draw_flower();
+	glPopMatrix();
+
+	glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
+	glTranslated(0, 3.9, 0);
     //Neck part
     glPushMatrix();
     setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
@@ -1416,6 +1481,15 @@ void draw_level2()
 }
 void draw_level3()
 {
+    //draw flawor
+    glPushMatrix();
+    glTranslated(-3, 0, 4);
+    draw_flower();
+    glPopMatrix();
+
+    glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
+    glTranslated(0, 3.9, 0);
+
     //Neck part
     glPushMatrix();
     setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
@@ -1479,6 +1553,15 @@ void draw_level3()
 }
 void draw_level4()
 {
+    //draw flawor
+    glPushMatrix();
+    glTranslated(-3, 0, 4);
+    draw_flower();
+    glPopMatrix();
+
+    glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
+    glTranslated(0, 3.9, 0);
+
     //Neck part
     glPushMatrix();
     setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
@@ -1529,6 +1612,14 @@ void draw_level4()
 
 void draw_level5()
 {
+    //draw flawor
+    glPushMatrix();
+    glTranslated(-3, 0, 4);
+    draw_flower();
+    glPopMatrix();
+
+    glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
+    glTranslated(0, 3.9, 0);
 
     //body
     glPushMatrix();
@@ -1538,95 +1629,803 @@ void draw_level5()
 
 }
 
-void inverse_kinematics(double posX,double posY,double posZ) 
+void draw_flower()
 {
-    double positionX = posX, positionY=posY, positionZ=posZ;
-    double kneeCons[3]{0.9,-3.2,-0.8};
-    double ankleCons[3]{0.9,-3.3,0.3};
-    double error[4]{INT_MAX,INT_MAX,INT_MAX,INT_MAX};
+   
+    glPushMatrix();
+    setDiffuseColor(0, 0.55, 0.27);
+    glScaled(8, 5, 5);
+    drawTriangle(0, 0.2, 0.2, 0.1, 0.25, 0, 0, 0, 0);
+    drawTriangle(0, 0.3, 0, 0.1, 0.25, 0, 0, 0, 0);
+    drawTriangle(0, 0.3, 0, 0, 0.2, 0.2, 0, 0, 0);
+    drawTriangle(0, 0.2, 0.2, 0.1, 0.25, 0, 0.3, 0.3, -0.3);
+    drawTriangle(0, 0.3, 0, 0.1, 0.25, 0, 0.3, 0.3, -0.3);
+    drawTriangle(0, 0.3, 0, 0, 0.2, 0.2, 0.3, 0.3, -0.3);
+    glPopMatrix();
 
-    double len1 = sqrt(1.5*1.5+0.5*0.5);
-    double len2 = sqrt(0.1*0.1+1.1*1.1);
-    double len3 = 0.9;
+    glPushMatrix();
+    setDiffuseColor(0, 0.55, 0.27);
+    glTranslated(-0.6, 0, 0.3);
+    glRotated(60, 0, 1, 0);
+    glScaled(5, 2, 3);
+    drawTriangle(0, 0.2, 0.2, 0.1, 0.25, 0, 0, 0, 0);
+    drawTriangle(0, 0.3, 0, 0.1, 0.25, 0, 0, 0, 0);
+    drawTriangle(0, 0.3, 0, 0, 0.2, 0.2, 0, 0, 0);
+    drawTriangle(0, 0.2, 0.2, 0.1, 0.25, 0, 0.3, 0.5, -0.3);
+    drawTriangle(0, 0.3, 0, 0.1, 0.25, 0, 0.3, 0.5, -0.3);
+    drawTriangle(0, 0.3, 0, 0, 0.2, 0.2, 0.3, 0.5, -0.3);
+    glPopMatrix();
 
-    double x = positionX - 0.9;
-    double y = positionY - (-1.7);
-    double z = positionZ - (-0.3);
+    glPushMatrix();
+    setDiffuseColor(0.8, 0.2, 0.2);
+    glTranslated(0, 1, 0);
+    glScaled(5, 5, 5);
+    drawTriangle(0, 0.2, 0.2, 0.2, 0.2, 0, 0, 0, 0);
+    drawTriangle(-0.1, 0.2, -0.1, 0.2, 0.2, 0, 0, 0, 0);
+    drawTriangle(-0.1, 0.2, -0.1, 0, 0.2, 0.2, 0, 0, 0);
+    drawTriangle(0, 0.2, 0.2, 0.2, 0.2, 0, 0, 0.6, 0);
+    drawTriangle(-0.1, 0.2, -0.1, 0.2, 0.2, 0, 0, 0.6, 0);
+    drawTriangle(-0.1, 0.2, -0.1, 0, 0.2, 0.2, 0, 0.6, 0);
+    glPopMatrix();
+}
 
-    double theta[2];
-    double alpha[4];
-    double beta[4];
+void draw_mode0()
+{
+    //draw flawor
+    glPushMatrix();
+    glTranslated(-3, 0, 4);
+    draw_flower();
+    glPopMatrix();
 
-    theta[0] = asin( x / len3);
-    theta[1] = (theta[0] > 0) ? (M_PI - theta[0]) : (-M_PI - theta[0]);
+    glTranslated(0, 3.9, 0);
 
-    for (int i = 0; i < 2; i++) {
-        double y_prime = y;
-        double z_prime = z - len3 * cos(theta[i]);
+    //Neck part
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0, 1.5, 0.6);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawCylinder(VAL(NECK_LENTH), 0.7, 0.5);
+    glPopMatrix();
 
-        double temp = acos( (pow(y_prime,2)+pow(z_prime,2)-pow(len1,2)-pow(len2,2)) / (2*len1*len2));
-        if (i==0) {
-            beta[0] = temp;
-            beta[1] = -1 * temp;
+    //head
+    glPushMatrix();
+    glTranslated(0, 2.8, 1.2);
+    glTranslated(0, VAL(NECK_LENTH) - 1, 0.2 * VAL(NECK_LENTH));
+    glRotated(-90, 0.0, 1.0, 0.0);
+    draw_Head();
 
-            for (int j = 0; j < 2; j++) {
-                double coeff1 = z_prime + len2 * y_prime * sin(beta[j]) / (len1 + len2 * cos(beta[j]));
-                double coeff2 = len1 + len2 * cos(beta[j]) + pow(len2, 2) * pow(sin(beta[j]), 2) / (len1 + len2 * cos(beta[j]));
-                alpha[j] = acos(coeff1 / coeff2);
+    glTranslated(1.35, 0, 0);
+    //upper mouth
+    glPushMatrix();
+    draw_UpperMouth();
+    glPopMatrix();
+
+    //lower mouth
+    glPushMatrix();
+    draw_LowerMouth();
+    glPopMatrix();
+
+    glPopMatrix();
+
+
+    //left wing
+    glPushMatrix();
+    glTranslated(1.5, 0, 0);
+    draw_left_wings();
+    glPopMatrix();
+
+    //right wing
+    glPushMatrix();
+    glTranslated(-1.5, 0, 0);
+    draw_right_wings();
+    glPopMatrix();
+
+    //body
+    glPushMatrix();
+    draw_body();
+    glPopMatrix();
+
+    //connection
+    glPushMatrix();
+    draw_connection();
+    glPopMatrix();
+
+    //tail
+    glPushMatrix();
+    glRotated(-20, 1, 0, 0);
+    glTranslated(0, 0, -4.5);
+    drawSphere(0.2);
+    draw_tail();
+    glPopMatrix();
+
+
+    //rightupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0.9, -1.7, -0.3);
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawSphere(0.2);
+    draw_rightupperLeg();
+    glRotated(90, 1.0, 0.0, 0.0);
+    draw_rightlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 1.0, 0.0, 0.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_righttoes();
+    glPopMatrix();
+
+    //lefttupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(-0.9, -1.7, -0.3);
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    draw_leftupperLeg();
+    drawSphere(0.2);
+    glRotated(90, 1.0, 0.0, 0.0);
+    draw_leftlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 1.0, 0.0, 0.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_lefttoes();
+    glPopMatrix();
+}
+
+void draw_mode1()
+{
+    //draw flawor
+    glPushMatrix();
+    glTranslated(-3, 0, 4);
+    draw_flower();
+    glPopMatrix();
+
+    glTranslated(0, 3.9, 0);
+
+
+    //Neck part
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0, 1.5, 0.6);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawCylinder(VAL(NECK_LENTH), 0.7, 0.5);
+    glPopMatrix();
+
+
+    //head
+    glPushMatrix();
+    glTranslated(0, 2.8, 1.2);
+    glTranslated(0, VAL(NECK_LENTH) - 1, 0.2 * VAL(NECK_LENTH));
+    glRotated(-90, 0.0, 1.0, 0.0);
+    glRotated(-20, 0.0, 0.0, 1.0);
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glScaled(1.5, 1.2, 1.2);
+    //draw head
+
+    drawSphere(1);
+
+    //draw eyes
+    setDiffuseColor(0.93, 0.91, 0.84);
+    glTranslated(0, 0, 0.45);
+    drawSphere(0.6);
+    glTranslated(0, 0, -0.9);
+    drawSphere(0.6);
+    setDiffuseColor(0.11, 0.11, 0.11);
+    glTranslated(0.14, -0.08, -0.45);
+    drawSphere(0.2);
+
+    glPushMatrix();
+    glTranslated(-0.55, 0.5,0.15);
+    glRotated(60, 0.0, 0.0, 1.0);
+    glScaled(1.5, 1, 1);
+    draw_lefteyebrow();
+    glPopMatrix();
+
+    setDiffuseColor(0.11, 0.11, 0.11);
+    glTranslated(0, 0, 1.8);
+    drawSphere(0.2);
+
+    glPushMatrix();
+    glTranslated(-0.55, 0.5, -0.15);
+    glRotated(60, 0.0, 0.0, 1.0);
+    glScaled(1.5, 1, 1);
+    draw_righteyebrow();
+    glPopMatrix();
+
+    glPopMatrix();
+
+    glTranslated(1.35, 0, 0);
+    //upper mouth
+    glPushMatrix();
+    draw_UpperMouth();
+    glPopMatrix();
+
+    //lower mouth
+    glPushMatrix();
+    draw_LowerMouth();
+    glPopMatrix();
+
+    glPopMatrix();
+
+
+    //left wing
+    glPushMatrix();
+    glTranslated(1.5, 0, 0);
+    glRotated(-20, 0.0, 0.0, 1);
+    draw_left_wings();
+    glPopMatrix();
+
+    
+    //right wing
+    glPushMatrix();
+    glTranslated(-1.5, 0, 0);
+    glRotated(20, 0.0, 0.0, 1.0);
+    draw_right_wings();
+    glPopMatrix();
+
+    //body
+    glPushMatrix();
+    draw_body();
+    glPopMatrix();
+
+    //connection
+    glPushMatrix();
+    draw_connection();
+    glPopMatrix();
+
+    //tail
+    glPushMatrix();
+    glRotated(-20, 1, 0, 0);
+    glTranslated(0, 0, -4.5);
+    drawSphere(0.2);
+    glRotated(10, 1.0, 0.0, 0);
+    draw_tail();
+    glPopMatrix();
+
+
+    //rightupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0.9, -1.7, -0.3);
+    glRotated(-60, 1.0, 0.0, 0);
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawSphere(0.2);
+    draw_rightupperLeg();
+    glRotated(90, 1.0, 0.0, 0.0);
+    glRotated(20, 1.0, 0.0, 0);
+    draw_rightlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 1.0, 0.0, 0.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_righttoes();
+    glPopMatrix();
+
+    //lefttupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(-0.9, -1.7, -0.3);
+    glRotated(-60, 1.0, 0.0, 0);
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    draw_leftupperLeg();
+    drawSphere(0.2);
+    glRotated(90, 1.0, 0.0, 0.0);
+    glRotated(20, 1.0, 0.0, 0.0);
+    draw_leftlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 1.0, 0.0, 0.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_lefttoes();
+    glPopMatrix();
+}
+
+
+
+void draw_mode2()
+{
+
+    //draw flawor
+    glPushMatrix();
+    glTranslated(-3, 0, 4);
+    draw_flower();
+    glPopMatrix();
+
+    glTranslated(0, 3.9, 0);
+
+
+    //Neck part
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0, 1.5, 0.6);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawCylinder(VAL(NECK_LENTH), 0.7, 0.5);
+    glPopMatrix();
+
+    
+    //head
+    glPushMatrix();
+    glTranslated(0, 2.8, 1.2);
+    glTranslated(0, VAL(NECK_LENTH) - 1, 0.2 * VAL(NECK_LENTH));
+    glRotated(-90, 0.0, 1.0, 0.0);
+    glRotated(-10, 0.0, 1.0, 0.0);
+    glRotated(20, 1.0, 0.0, 0.0);
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glScaled(1.5, 1.2, 1.2);
+    //draw head
+   
+    drawSphere(1);
+
+    //draw eyes
+    setDiffuseColor(0.93, 0.91, 0.84);
+    glTranslated(0, 0, 0.45);
+    drawSphere(0.6);
+    glTranslated(0, 0, -0.9);
+    drawSphere(0.6);
+    setDiffuseColor(0.11, 0.11, 0.11);
+    glTranslated(0.14, -0.2, -0.45);
+    drawSphere(0.2);
+    glTranslated(0, 0, 1.8);
+    drawSphere(0.2);
+    glPopMatrix();
+
+    glTranslated(1.35, 0, 0);
+    //upper mouth
+    glPushMatrix();
+    draw_UpperMouth();
+    glPopMatrix();
+
+    //lower mouth
+    glPushMatrix();
+    draw_LowerMouth();
+    glPopMatrix();
+
+    glPopMatrix();
+
+
+    //left wing
+    glPushMatrix();
+    glTranslated(1.5, 0, 0);
+    glRotated(-20, 0.0, 0.0, 1);
+    draw_left_wings();
+    glPopMatrix();
+
+    glRotated(20, 0.0, 0.0, 1.0);
+    //right wing
+    glPushMatrix();
+    glTranslated(-1.5, 0, 0);
+    glRotated(20, 0.0, 0.0, 1.0);
+    draw_right_wings();
+    glPopMatrix();
+
+    //body
+    glPushMatrix();
+    draw_body();
+    glPopMatrix();
+
+    //connection
+    glPushMatrix();
+    draw_connection();
+    glPopMatrix();
+
+    //tail
+    glPushMatrix();
+    glRotated(-20, 1, 0, 0);
+    glTranslated(0, 0, -4.5);
+    drawSphere(0.2);
+    draw_tail();
+    glPopMatrix();
+
+
+    //rightupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0.9, -1.7, -0.3);
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawSphere(0.2);
+    draw_rightupperLeg();
+    glRotated(90, 1.0, 0.0, 0.0);
+    glRotated(-20, 1.0, 0.0, 0);
+    draw_rightlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 0.0, 0.0, 1.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_righttoes();
+    glPopMatrix();
+
+    //lefttupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(-0.9, -1.7, -0.3);
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    draw_leftupperLeg();
+    drawSphere(0.2);
+    glRotated(90, 1.0, 0.0, 0.0);
+    glRotated(-20, 1.0, 0.0, 0.0);
+    draw_leftlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 0.0, 0.0, 1.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_lefttoes();
+    glPopMatrix();
+}
+
+
+void draw_mode3()
+{
+    //draw flawor
+    glPushMatrix();
+    glTranslated(-3, 0, 4);
+    draw_flower();
+    glPopMatrix();
+
+    glTranslated(0, 3.9, 0);
+
+    //Neck part
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0, 1.5, 0.6);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawCylinder(VAL(NECK_LENTH), 0.7, 0.5);
+    glPopMatrix();
+
+    //head
+    glPushMatrix();
+    glTranslated(0, 2.8, 1.2);
+    glTranslated(0, VAL(NECK_LENTH) - 1, 0.2 * VAL(NECK_LENTH));
+    glRotated(-90, 0.0, 1.0, 0.0);
+    glRotated(25, 0.0, 0.0, 1.0);
+    draw_Head();
+
+    glTranslated(1.35, 0, 0);
+    //upper mouth
+    glPushMatrix();
+    glRotated(20, 0, 0, 1);
+    draw_UpperMouth();
+    glPopMatrix();
+
+    //lower mouth
+    glPushMatrix();
+    glRotated(-10, 0, 0, 1);
+    draw_LowerMouth();
+    glPopMatrix();
+
+    glPopMatrix();
+
+
+    //left wing
+    glPushMatrix();
+    glTranslated(1.5, 0, 0);
+    glRotated(20, 0.0, 0.0, 1);
+    draw_left_wings();
+    glPopMatrix();
+
+    //right wing
+    glPushMatrix();
+    glTranslated(-1.5, 0, 0);
+    glRotated(-20, 0.0, 0.0, 1);
+    draw_right_wings();
+    glPopMatrix();
+
+    //body
+    glPushMatrix();
+    draw_body();
+    glPopMatrix();
+
+    //connection
+    glPushMatrix();
+    draw_connection();
+    glPopMatrix();
+
+    //tail
+    glPushMatrix();
+    glRotated(-20, 1, 0, 0);
+    glTranslated(0, 0, -4.5);
+    drawSphere(0.2);
+    glRotated(50, 1.0, 0.0, 0);
+    draw_tail();
+    glPopMatrix();
+
+
+    //rightupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0.9, -1.7, -0.3);
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawSphere(0.2);
+    draw_rightupperLeg();
+    glRotated(90, 1.0, 0.0, 0.0);
+    draw_rightlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 1.0, 0.0, 0.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_righttoes();
+    glPopMatrix();
+
+    //lefttupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(-0.9, -1.7, -0.3);
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    draw_leftupperLeg();
+    drawSphere(0.2);
+    glRotated(90, 1.0, 0.0, 0.0);
+    draw_leftlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 1.0, 0.0, 0.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_lefttoes();
+    glPopMatrix();
+}
+
+
+
+void draw_mode4()
+{
+    //draw flawor
+    glPushMatrix();
+    glTranslated(-3, 0, 4);
+    
+    //leaves
+    glPushMatrix();
+    setDiffuseColor(0, 0.55, 0.27);
+    glScaled(8, 5, 5);
+    drawTriangle(0, 0.2, 0.2, 0.1, 0.25, 0, 0, 0, 0);
+    drawTriangle(0, 0.3, 0, 0.1, 0.25, 0, 0, 0, 0);
+    drawTriangle(0, 0.3, 0, 0, 0.2, 0.2, 0, 0, 0);
+    drawTriangle(0, 0.2, 0.2, 0.1, 0.25, 0, 0.3, 0.3, -0.3);
+    drawTriangle(0, 0.3, 0, 0.1, 0.25, 0, 0.3, 0.3, -0.3);
+    drawTriangle(0, 0.3, 0, 0, 0.2, 0.2, 0.3, 0.3, -0.3);
+    glPopMatrix();
+
+    glPushMatrix();
+    setDiffuseColor(0, 0.55, 0.27);
+    glTranslated(-0.6, 0, 0.3);
+    glRotated(60, 0, 1, 0);
+    glScaled(5, 2, 3);
+    drawTriangle(0, 0.2, 0.2, 0.1, 0.25, 0, 0, 0, 0);
+    drawTriangle(0, 0.3, 0, 0.1, 0.25, 0, 0, 0, 0);
+    drawTriangle(0, 0.3, 0, 0, 0.2, 0.2, 0, 0, 0);
+    drawTriangle(0, 0.2, 0.2, 0.1, 0.25, 0, 0.3, 0.5, -0.3);
+    drawTriangle(0, 0.3, 0, 0.1, 0.25, 0, 0.3, 0.5, -0.3);
+    drawTriangle(0, 0.3, 0, 0, 0.2, 0.2, 0.3, 0.5, -0.3);
+    glPopMatrix();
+    
+
+
+    //flower
+    glTranslated(2.5, 8.75, 0.1);
+    glPushMatrix();
+    
+    //draw steam
+    glPushMatrix();
+    glRotated(90, 0.0, 1.0, 0.0);
+    drawCylinder(2, 0.05, 0.05);
+    glPopMatrix();
+
+    glRotated(80, 0.0, 0.0, 1.0);
+    setDiffuseColor(0.8, 0.2, 0.2);
+    glScaled(3, 3, 3);
+    drawTriangle(0, 0.2, 0.2, 0.2, 0.2, 0, 0, 0, 0);
+    drawTriangle(-0.1, 0.2, -0.1, 0.2, 0.2, 0, 0, 0, 0);
+    drawTriangle(-0.1, 0.2, -0.1, 0, 0.2, 0.2, 0, 0, 0);
+    drawTriangle(0, 0.2, 0.2, 0.2, 0.2, 0, 0, 0.6, 0);
+    drawTriangle(-0.1, 0.2, -0.1, 0.2, 0.2, 0, 0, 0.6, 0);
+    drawTriangle(-0.1, 0.2, -0.1, 0, 0.2, 0.2, 0, 0.6, 0);
+    glPopMatrix();
+
+    glPopMatrix();
+
+
+    glTranslated(0, 5.9, 0);
+
+    //Neck part
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0, 1.5, 0.6);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawCylinder(VAL(NECK_LENTH), 0.7, 0.5);
+    glPopMatrix();
+
+    //head
+    glPushMatrix();
+    glTranslated(0, 2.8, 1.2);
+    glTranslated(0, VAL(NECK_LENTH) - 1, 0.2 * VAL(NECK_LENTH));
+    glRotated(-90, 0.0, 1.0, 0.0);
+    draw_Head();
+
+    glTranslated(1.35, 0, 0);
+    //upper mouth
+    glPushMatrix();
+    glRotated(3, 0, 0, 1);
+    draw_UpperMouth();
+    glPopMatrix();
+
+    //lower mouth
+    glPushMatrix();
+    glRotated(-2, 0, 0, 1);
+    draw_LowerMouth();
+    glPopMatrix();
+
+    glPopMatrix();
+
+
+    //left wing
+    glPushMatrix();
+    glTranslated(1.5, 0, 0);
+    glRotated(10, 0.0, 0.0, 1);
+    draw_left_wings();
+    glPopMatrix();
+
+    //right wing
+    glPushMatrix();
+    glTranslated(-1.5, 0, 0);
+    glRotated(-10, 0.0, 0.0, 1);
+    draw_right_wings();
+    glPopMatrix();
+
+    //body
+    glPushMatrix();
+    draw_body();
+    glPopMatrix();
+
+    //connection
+    glPushMatrix();
+    draw_connection();
+    glPopMatrix();
+
+    //tail
+    glPushMatrix();
+    glRotated(-20, 1, 0, 0);
+    glTranslated(0, 0, -4.5);
+    drawSphere(0.2);
+    draw_tail();
+    glPopMatrix();
+
+
+    //rightupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0.9, -1.7, -0.3);
+    glRotated(50, 1.0, 0.0, 0);
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawSphere(0.2);
+    draw_rightupperLeg();
+    glRotated(90, 1.0, 0.0, 0.0);
+    glRotated(-40, 1.0, 0.0, 0);
+    draw_rightlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 1.0, 0.0, 0.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_righttoes();
+    glPopMatrix();
+
+    //lefttupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(-0.9, -1.7, -0.3);
+    glRotated(50, 1.0, 0.0, 0);
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    draw_leftupperLeg();
+    drawSphere(0.2);
+    glRotated(90, 1.0, 0.0, 0.0);
+    glRotated(-40, 1.0, 0.0, 0.0);
+    draw_leftlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 1.0, 0.0, 0.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_lefttoes();
+    glPopMatrix();
+}
+
+void draw_pixl()
+{
+    glPushMatrix();
+    setDiffuseColor(0.6,0.5,0.1);
+    //drawTriangle(0, 0, 0, 0.01, 0, 0, 0.01, 0, 0.01);
+    drawTriangle(0, 0, 0, 0, 0, 0.01, 0.01, 0, 0.01);
+    drawTriangle(0, 0, 0, 0.01, 0, 0, 0.01, 0, 0.01);
+    glPopMatrix();
+}
+void draw_pixl1()
+{
+    glPushMatrix();
+    setDiffuseColor(0.6, 0.5, 0.1);
+    drawTriangle(0, 0, 0, 0.01, 0, 0, 0.01, 0, 0.01);
+    glPopMatrix();
+}
+
+float calculate_point_distance(point a,point b)
+{
+   float dis = sqrt((a.x-b.x)* (a.x - b.x)+ (a.y - b.y) * (a.y - b.y)+ (a.z - b.z) * (a.z - b.z));
+
+   return dis;
+}
+
+void draw_surface(curve a, curve b)
+{
+    for (int i = 0;i < a.point_num-1;i++)
+    {
+        //cout << "i = "<< i<< endl;
+        for (int j = 0;j < b.point_num-1;j++)
+        {
+            //cout << "j = "<<j << endl;
+            float dis_a = calculate_point_distance(a.points[i], a.points[i + 1]);
+            float dis_b = calculate_point_distance(b.points[j], b.points[j + 1]);
+            int num_pixl_b = dis_b/0.01;
+            int num_pixl_a = dis_a /0.01;
+            //cout << "a.points[i] = " << a.points[i].x << endl;
+            //cout << "b.points[i] = " << a.points[i].x << endl;
+
+           // cout << "dis_b = " << dis_b << endl;
+            //cout << "dis_a = " << dis_a << endl;
+
+            //cout << "num_pixl_b = " << num_pixl_b << endl;
+            //cout << "num_pixl_a = " << num_pixl_a << endl;
+            float dx_a = a.points[i + 1].x - a.points[i].x;
+            float dy_a = a.points[i + 1].y - a.points[i].y;
+            float dz_a = a.points[i + 1].z - a.points[i].z;
+
+            float dx = b.points[j + 1].x - b.points[j].x;
+            float dy = b.points[j + 1].y - b.points[j].y;
+            float dz = b.points[j + 1].z - b.points[j].z;
+
+            for (int m = 0;m < num_pixl_a+1;m++) 
+            {
+                //cout << "3" << endl;
+                
+
+                double angle1 = asin(dy_a / dis_a) * 180;
+
+                glTranslated(0.01 * dx_a, 0.01 * dy_a, 0.01 * dz_a);
+                glRotated(angle1, dx_a, 0.0, dz_a);
+                glPushMatrix();
+                glTranslated(a.points[i].x, a.points[i].y, a.points[i].z);
+                for (int k = 0;k < num_pixl_b+1;k++)
+                {
+                   //cout << "4" << endl;
+                
+                    //float degree1 = dz / dx;
+                    //double angle1 = atan(degree1) * 180;
+                    double angle2 = asin(dy / dis_b) * 180;
+                    glTranslated(0.01 * dx, 0.01 * dy, 0.01 * dz);
+                    //glRotated(angle1, 0.0, 1.0, 0.0);
+                    glRotated(angle2, dx, 0.0, dz);
+                    draw_pixl();
+                }
+                glPopMatrix();
             }
-        }
-        else {
-            beta[2] = temp;
-            beta[3] = -1 * temp;
-
-            for (int j = 2; j < 4; j++) {
-                double coeff1 = z_prime + len2 * y_prime * sin(beta[j]) / (len1 + len2 * cos(beta[j]));
-                double coeff2 = len1 + len2 * cos(beta[j]) + pow(len2, 2) * pow(sin(beta[j]), 2) / (len1 + len2 * cos(beta[j]));
-                alpha[j] = acos(coeff1 / coeff2);
-            }
+            
+       
         }
     }
 
-    double min_error = error[0];
-    int index = -1;
-    
-    for (int i = 0; i < 4; i++) {
-        double real_knee[3];
-        real_knee[0] = 0;
-        real_knee[1] = len1 * sin(alpha[i]);
-        real_knee[2] = len1 * cos(alpha[i]);
-
-        double real_ankle[3];
-        real_ankle[0] = 0;
-        real_ankle[1] = y;
-        real_ankle[2] = z - len3 * cos(theta[i/2]);
-
-        error[i] = pow(real_knee[0] - kneeCons[0], 2) + pow(real_knee[1] - kneeCons[1], 2) + pow(real_knee[2] - kneeCons[2], 2)
-            + pow(real_ankle[0] - ankleCons[0], 2) + pow(real_ankle[1] - ankleCons[1], 2) + pow(real_ankle[2] - ankleCons[2], 2);
-
-        if (min_error > error[i]) {
-            min_error = error[i];
-            index = i;
-        }
-    }
-    
-    if (index != -1) {
-        double temp0 = atan(1.5 / 0.5) * 180 / M_PI;
-        //cout << temp0 << ' ';
-        double temp1 = -1*alpha[index]*180/M_PI - (180-temp0);
-        //cout << "alpha: " << -1 * alpha[index] * 180 / M_PI << ' ';
-        ModelerApplication::Instance()->SetControlValue(UPPER_RIGHT_LEG,temp1);
-        //cout << "upper: " << temp1;
-        temp0 = atan(0.1 / 1.1) * 180 / M_PI + temp0;
-        //cout <<" hh "<< temp0 << ' ';
-        temp1 = 180 - temp0 - beta[index]*180/M_PI;
-        //cout << "beta: " << -1*beta[index] * 180 / M_PI;
-        ModelerApplication::Instance()->SetControlValue(LOWER_RIGHT_LEG,temp1 );
-        //cout << " lower: " << temp1;
-        temp1 = 0;
-        temp1 = 10 - theta[index/2] * 180 / M_PI;
-        ModelerApplication::Instance()->SetControlValue(RIGHT_TOES, temp1);
-        //cout << " toe: " << temp1<<endl;
-    }
-    
 }

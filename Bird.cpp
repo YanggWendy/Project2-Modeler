@@ -7,8 +7,7 @@
 #include "modelerglobals.h"
 #include "bitmap.h"
 #include "modelerui.h"
-#include <iostream>
-using namespace std;
+
 
 
 // To make a BirdModel, we inherit off of ModelerView
@@ -75,8 +74,55 @@ void BirdModel::draw()
 
 	int isAnimationOn = ModelerUserInterface::m_controlsAnimOnMenu->value();
 
-	
-		
+	glPushMatrix();
+	//test
+	point p1(2, 2, 3 );
+	point p2( 2.5, 2, 3);
+	point p3 = { 2.6, 2.1, 3 };
+	point p4 = { 2.8, 2.3, 3 };
+	point p5 = { 3, 2, 3 };
+	point p6 = { 3.1, 2.1, 3 };
+	point p7 = { 3.2, 2, 3 };
+
+
+	point p8 = { 2, 2, 3.1 };
+	point p9 = { 2.1, 2, 3.3 };
+	point p10 = { 2.2, 2, 3.4 };
+	point p11= { 2.3, 2, 3.6 };
+	point p12 = { 2.2, 2, 4 };
+
+	//curve c1 = {new point[5],5 };
+
+	//curve c2= { new point[7],7 };
+	curve c1(5);
+	curve c2(7);
+
+	c1.points[0] = p8;
+	c1.points[1] = p9;
+	c1.points[2] = p10;
+	c1.points[3] = p11;
+	c1.points[4] = p12;
+
+	c2.points[0] = p1;
+	c2.points[1] = p2;
+	c2.points[2] = p3;
+	c2.points[3] = p4;
+	c2.points[4] = p5;
+	c2.points[3] = p6;
+	c2.points[4] = p7;
+
+
+
+	glScaled(3, 3, 3);
+	draw_surface(c1, c2);
+
+	glTranslated(4, 2, 3);
+
+	glScaled(15, 15, 15);
+	draw_pixl();
+	draw_pixl1();
+
+	glPopMatrix();
 
 	// draw the floor
 	float R = VAL(DEFAULT_LIGHT_R) / 255;
@@ -86,65 +132,72 @@ void BirdModel::draw()
 	setAmbientColor(R,G,B);
 	setDiffuseColor(0.42,0.56,0.14);
 	glPushMatrix();
-	glTranslated(-5, 0, -5);
-	drawBox(10, 0.1f, 10);
+	glTranslated(-7.5, 0, -7.5);
+	drawBox(15, 0.1f, 15);
 	glPopMatrix();
+	
 
-	glTranslated(0, 3.9, 0);
+	if (VAL(MODE_ON) == 1)
+	{
+		int mode = VAL(MODE);
+		switch (mode)
+		{
+		case 0:
+			draw_mode0();
+			break;
+		case 1:
+			draw_mode1();
+			break;
+		case 2:
+			draw_mode2();
+			break;
+		case 3:
+			draw_mode3();
+			break;
+		case 4:
+			draw_mode4();
+			break;
 
-
-
-	if (VAL(LEVEL)==0)
-	{	
-		//draw_constrain
-		/*initTexture();
-		drawTexture();*/
-		if (isAnimationOn) { draw_level0_animation(); }
-		else {
-			if (VAL(IK_ON) == 1) {
-				/*
-				glPushMatrix();
-				setDiffuseColor(1,1,1);
-				glTranslated(VAL(TARGETX), VAL(TARGETY), VAL(TARGETZ));
-				drawBox(0.2,0.2,0.2);
-				glPopMatrix();
-				*/
-				inverse_kinematics(VAL(TARGETX), VAL(TARGETY), VAL(TARGETZ));
-				
-				//cout << VAL(TARGETX) <<' '<< VAL(TARGETY) <<' '<< VAL(TARGETZ) << endl;
-			}
-			draw_level0(); 
 		}
 	}
-	else if (VAL(LEVEL) == 1)
+	else
 	{
-		draw_level1();
-	}
-	else if (VAL(LEVEL) == 2)
-	{
-		draw_level2();
-	}
-	else if (VAL(LEVEL) == 3)
-	{
-		draw_level3();
-	}
-	else if (VAL(LEVEL) == 4)
-	{
-		draw_level4();
-	}
-	else if (VAL(LEVEL) == 5)
-	{
-		draw_level5();
+		if (VAL(LEVEL) == 0)
+		{
+			//draw_constrain
+			/*initTexture();
+			drawTexture();*/
+			if (isAnimationOn) { draw_level0_animation(); }
+			else {
+				draw_level0();
+				//draw_mode4();
+			}
+		}
+		else if (VAL(LEVEL) == 1)
+		{
+			draw_level1();
+		}
+		else if (VAL(LEVEL) == 2)
+		{
+			draw_level2();
+		}
+		else if (VAL(LEVEL) == 3)
+		{
+			draw_level3();
+		}
+		else if (VAL(LEVEL) == 4)
+		{
+			draw_level4();
+		}
+		else if (VAL(LEVEL) == 5)
+		{
+			draw_level5();
+		}
 	}
 
 	glPopMatrix();
-	/*
-	if (VAL(IK_ON) == 1) {
-		inverse_kinematics(VAL(TARGETX),VAL(TARGETY),VAL(TARGETZ));
-		draw_level0();
-	}
-	*/
 }
+
 
 int main()
 {
@@ -153,8 +206,12 @@ int main()
 	// stepsize, defaultvalue)
 	ModelerControl controls[NUMCONTROLS];
 	
+	controls[XPOS] = ModelerControl("Move X", -5, 5, 1, 0);
+	controls[YPOS] = ModelerControl("Move Y", 0, 5, 1, 0);
+	controls[ZPOS] = ModelerControl("Move Z", -5, 5, 1, 0);
+
 	controls[HEADYPOS] = ModelerControl("Head Y Rotate", -20, 20, 1, 0);
-	controls[HEADZPOS] = ModelerControl("Head Z Rotate", -20, 20, 1, 0);
+	controls[HEADZPOS] = ModelerControl("Head X Rotate", -20, 20, 1, 0);
 	controls[MOUTHZPOS] = ModelerControl("Mouth Rotate", 0, 40, 1, 0);
 	controls[NECK_LENTH] = ModelerControl("Neck Length", 1, 1.6, 0.1f, 1);
 
@@ -189,6 +246,10 @@ int main()
 	controls[LEG_G] = ModelerControl("Leg G", 0, 1, 0.01, 0.11);
 	controls[LEG_B] = ModelerControl("Leg B", 0, 1, 0.01, 0.0);
 
+	controls[EYEBROW_R] = ModelerControl("Eyebrows R", 0, 1, 0.01, 0.55);
+	controls[EYEBROW_G] = ModelerControl("Eyebrows G", 0, 1, 0.01, 0.27);
+	controls[EYEBROW_B] = ModelerControl("Eyebrows B", 0, 1, 0.01, 0.07);
+
 	controls[LEVEL] = ModelerControl("Body Level", 0, 5, 1, 0.0);
 
 	controls[TURNONLIGHT] = ModelerControl("Custom Light Source", 0, 1, 1, 0);
@@ -196,19 +257,17 @@ int main()
 	controls[LIGHTY] = ModelerControl("Light Y", 0, 5, 0.1f, 0);
 	controls[LIGHTZ] = ModelerControl("Light Z", -5, 5, 0.1f, 0);
 
-	controls[TARGETX] = ModelerControl("IK x-coordinate", 0, 1.8,0.1,0.9);
-	controls[TARGETY] = ModelerControl("IK y-coordinate", -4.3, 0.9, 0.1, -3.3);
-	controls[TARGETZ] = ModelerControl("IK z-coordinate", -2.9, 2.3, 0.1, 1.2);
-	/*
-	controls[KNEECONSTRAINTX] = ModelerControl();
-	controls[KNEECONSTRAINTY] = ModelerControl();
-	controls[KNEECONSTRAINTZ] = ModelerControl();
+	controls[FRAME_ALL] = ModelerControl("Fram all", 0, 1, 1, 0);
 
-	controls[ANKLECONSTRAINTX] = ModelerControl();
-	controls[ANKLECONSTRAINTY] = ModelerControl();
-	controls[ANKLECONSTRAINTZ] = ModelerControl();
-	*/
-	controls[IK_ON] = ModelerControl("IK on/off",0,1,1,0);
+	controls[CAM_XPOS] = ModelerControl("Camera Move X", -20, 20, 1, 0);
+	controls[CAM_YPOS] = ModelerControl("Camera Move Y", -20, 20, 1, 0);
+	controls[CAM_ZPOS] = ModelerControl("Camera Move Z", -20, 20, 1, 0);
+
+
+	controls[MODE_ON] = ModelerControl("Mode on", 0, 1, 1, 0.0);
+	controls[MODE] = ModelerControl("Mode", 0, 4, 1, 0.0);
+
+
 
 	ModelerApplication::Instance()->Init(&createBirdModel, controls, NUMCONTROLS);
 	

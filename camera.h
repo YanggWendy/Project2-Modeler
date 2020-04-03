@@ -5,6 +5,7 @@
 
 #include "vec.h"
 #include "mat.h"
+#include "modelerglobals.h"
 
 //==========[ class Camera ]===================================================
 
@@ -77,13 +78,13 @@ public:
     void clickMouse( MouseAction_t action, int x, int y );
     void dragMouse( int x, int y );
     void releaseMouse( int x, int y );
-    void wheelMove(int y);
     
     //---[ Viewing Transform ]--------------------------------
     void applyViewingTransform();
 
 	// gluLookAt equivalent
 	void lookAt(Vec3f eye, Vec3f at, Vec3f up);
+    void set_Camera_Position(float x, float y, float z);
 };
 
 #endif

@@ -3,6 +3,11 @@
 #include <gl/glu.h>
 #include <math.h>
 #include "camera.h"
+#include "modelerglobals.h"
+#include "modelerapp.h"
+
+#include <iostream>
+using namespace std;
 
 #pragma warning(push)
 #pragma warning(disable : 4244)
@@ -71,6 +76,7 @@ void MakeHRotZ(Mat4f &m, float theta)
 }
 
 
+
 void Camera::calculateViewingTransformParameters() 
 {
 	Mat4f dollyXform;
@@ -87,7 +93,9 @@ void Camera::calculateViewingTransformParameters()
 	MakeDiagonal(twistXform, 1.0f);
 	MakeHTrans(originXform, mLookAt);
 	
-	mPosition = Vec3f(0,0,0);
+	mPosition = Vec3f(0, 8, -10);
+	
+
 	// grouped for (mat4 * vec3) ops instead of (mat4 * mat4) ops
 	mPosition = originXform * (azimXform * (elevXform * (dollyXform * mPosition)));
 
@@ -105,9 +113,8 @@ Camera::Camera()
 	mDolly = -20.0f;
 	mElevation = 0.2f;
 	mAzimuth = (float)M_PI;
-	mTwist = 0;
 
-	mLookAt = Vec3f( 0, 0, 0 );
+	mLookAt = Vec3f( 0, 3, 0 );
 	mCurrentMouseAction = kActionNone;
 
 	calculateViewingTransformParameters();
@@ -118,23 +125,6 @@ void Camera::clickMouse( MouseAction_t action, int x, int y )
 	mCurrentMouseAction = action;
 	mLastMousePosition[0] = x;
 	mLastMousePosition[1] = y;
-}
-
-void Camera::wheelMove(int dy) 
-{
-	mTwist = 5.0* dy * M_PI / 180;
-	Vec3f forward = mLookAt - mPosition;
-	forward.normalize();
-	float x = forward[0];
-	float y = forward[1];
-	float z = forward[2];
-	double c = cos(mTwist);
-	double s = sin(mTwist);
-	Mat3f rotation(1, x*y*(1-c)-z*s,  x*z*(1-c)+y*s,
-					y*x*(1-c)+z*s, 1, y*z*(1-c)-x*s,
-					x*z*(1-c)-y*s, y*z*(1-c)+x*s, 1
-		);
-	mUpVector = rotation * mUpVector;
 }
 
 void Camera::dragMouse( int x, int y )
@@ -244,5 +234,35 @@ void Camera::lookAt(Vec3f eye, Vec3f at, Vec3f up)
 	glTranslated(-1*eye[0], -1*eye[1], -1*eye[2]);
 }
 
+void Camera::set_Camera_Position(float x, float y, float z)
+{
+	Mat4f dollyXform;
+	Mat4f azimXform;
+	Mat4f elevXform;
+	Mat4f twistXform;
+	Mat4f originXform;
+
+	Vec3f upVector;
+
+	MakeHTrans(dollyXform, Vec3f(0, 0, mDolly));
+	MakeHRotY(azimXform, mAzimuth);
+	MakeHRotX(elevXform, mElevation);
+	MakeDiagonal(twistXform, 1.0f);
+	MakeHTrans(originXform, mLookAt);
+
+
+	mPosition = Vec3f(x, y, z);
+	
+
+	// grouped for (mat4 * vec3) ops instead of (mat4 * mat4) ops
+	mPosition = originXform * (azimXform * (elevXform * (dollyXform * mPosition)));
+
+	if (fmod((double)mElevation, 2.0 * M_PI) < 3 * M_PI / 2 && fmod((double)mElevation, 2.0 * M_PI) > M_PI / 2)
+		mUpVector = Vec3f(0, -1, 0);
+	else
+		mUpVector = Vec3f(0, 1, 0);
+
+	mDirtyTransform = false;
+}
 
 #pragma warning(pop)
